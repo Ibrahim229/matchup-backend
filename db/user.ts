@@ -9,12 +9,11 @@ const UserSchema = new Schema<IUser, IUserModel>({
   age: { type: Number, required: true },
   gender: { type: String, required: true, enum: ["male", "female"] },
   password: { type: String, required: true },
-
+  isVerified: { type: Boolean, default: false }
 });
 
 UserSchema.pre("save", function (next) {
   const user = this
-  console.log("meiddleware hook on create", user)
   if (this.isModified("password") || this.isNew) {
     bcrypt.genSalt(10, function (saltError, salt) {
       if (saltError) {
@@ -50,7 +49,7 @@ UserSchema.methods.toJson = function () {
     phoneNumber: this.phoneNumber,
     email: this.email,
     age: this.age,
-    gender: this.gender
+    gender: this.gender,
   }
 }
 

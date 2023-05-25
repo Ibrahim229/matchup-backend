@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import express from 'express';
 import apiRouter from './api';
 import mongoose from 'mongoose';
-require('./passport');
+require('./config/passport');
 
 
 config();

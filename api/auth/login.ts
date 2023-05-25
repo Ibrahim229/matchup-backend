@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 import passport from "passport"
+import asyncHandler from '../middlewares/async-handler';
 
-/* POST login. */
-const login = function (req, res, next) {
+const login = asyncHandler(async (req, res) => {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err || !user) {
             return res.status(400).json({
@@ -18,7 +18,7 @@ const login = function (req, res, next) {
             var userData = user.toJson()
             return res.json({ userData, token });
         })
-    })(req, res, next);;
-}
+    })(req, res);
+})
 
 export default login;

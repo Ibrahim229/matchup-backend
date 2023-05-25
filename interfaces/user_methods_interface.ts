@@ -7,6 +7,7 @@ interface IUserDocument extends Document {
     age: number
     gender: string
     password: String
+    isVerified: boolean,
 }
 
 export interface IUser extends IUserDocument {
