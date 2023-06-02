@@ -24,7 +24,6 @@ export const checkVerification = async (number: string, code: string) => {
   var verification_check = await client.verify.v2.services
     (process.env.TWILIO_VERIFICATION_SID!)
     .verificationChecks.create({ to: `${number}`, code: `${code}` });
-    console.log(verification_check )
   return verification_check.valid;
 
 }

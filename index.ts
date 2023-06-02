@@ -13,7 +13,6 @@ const app = express();
 var bodyParser = require('body-parser')
 app.use(bodyParser.json()); // Parse JSON bodies
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use('/api', apiRouter);
 
 app.listen(process.env.PORT);
