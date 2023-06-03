@@ -3,7 +3,7 @@ import express from 'express';
 import apiRouter from './api';
 import './db';
 import './cronJob/cronJob';
-import './index.d.ts';
+// import './index.d.ts';
 require('./config/passport');
 
 

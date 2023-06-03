@@ -18,7 +18,7 @@ services:
       - .:/usr/src/app
       - app-node-modules:/usr/src/app/node_modules
     working_dir: /usr/src/app
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "npm install && npm run start"
 
 volumes:
   mongo-data:

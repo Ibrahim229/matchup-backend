@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "ts-node --transpile-only index.ts",
     "dev": "nodemon -x ts-node --transpile-only index.ts",
     "debug": "nodemon --inspect=0.0.0.0:9229 --watch server server/bin/www"
   },
