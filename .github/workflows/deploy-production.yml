@@ -13,6 +13,6 @@ jobs:
       - name: Add SSH key
         run: |
           echo "${{ secrets.SSH_KEY }}" > /tmp/ssh-key.pem
-          chmod 400 /tmp-ssh-key.pem
+          chmod 400 /tmp/ssh-key.pem
       - name: Deploy code
         run: ./ci/deploy.sh
