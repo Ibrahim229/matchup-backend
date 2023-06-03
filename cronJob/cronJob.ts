@@ -1,12 +1,10 @@
 import cron from 'node-cron';
-import Booking from './db/booking';
-import mongoose from 'mongoose';
-import Period, { PeriodType } from './db/period';
+import Booking from '../db/booking';
+import { connectionPromise } from '../db';
 
-mongoose.connect(process.env.MONGO_URI!).then(() => {
+connectionPromise.then(() => {
     cron.schedule('*/1 * * * *', async () => {
         try {
-            var periods = await Period.find()
             var rows = await Booking.find().populate('periodID').exec();
             for (const row of rows) {
 

@@ -1,6 +1,7 @@
-import { Schema, model } from "mongoose";
+import { InferSchemaType, Schema, model } from "mongoose";
 import bcrypt from "bcrypt"
 import IUserModel, { IUser } from "../interfaces/user_methods_interface";
+import { WithId } from "mongodb";
 
 const UserSchema = new Schema<IUser, IUserModel>({
   fullName: { type: String, required: true },
@@ -54,6 +55,10 @@ UserSchema.methods.toJson = function () {
 }
 
 
+export type UserType = WithId<InferSchemaType<typeof UserSchema>>;
+
+
 const User = model('User', UserSchema);
+
 
 export default User;

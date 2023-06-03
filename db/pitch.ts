@@ -1,4 +1,5 @@
 import { InferSchemaType, Schema, model, Types } from "mongoose";
+import { WithId } from 'mongodb';
 
 import { periodSchema } from "./period";
 
@@ -30,7 +31,7 @@ const PitchSchema = new Schema({
 
 
 
-export type PitchType = InferSchemaType<typeof PitchSchema>;
+export type PitchType = WithId<InferSchemaType<typeof PitchSchema>>;
 
 const Pitch = model('Pitch', PitchSchema);
 
