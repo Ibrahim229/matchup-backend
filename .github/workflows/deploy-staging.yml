@@ -13,11 +13,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Add SSH key
         run: |
-          echo "${{ secrets.SSH_KEY }}" > /tmp/ssh-key.pem
+          echo "${{ secrets.SSH_STG_KEY }}" > /tmp/ssh-key.pem
           chmod 400 /tmp/ssh-key.pem
           mkdir ~/.ssh/
-          echo ec2-35-159-27-80.eu-central-1.compute.amazonaws.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHGKoxeOaUBycQ8dkY3SlW8TQboEg6uWdbF1q9P0onvxC4JE7PQdYkkHn3uES0E2CPsW0hfdvzTYxVb0p7iEpHA= > ~/.ssh/known_hosts
-          echo ssh-keygen -R  35.159.27.80
+          echo ec2-35-159-27-80.eu-central-1.compute.amazonaws.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSwvlyEu4auJ3dgjHaOQXR28gfBRF7ZnKmuw/FIZHp0= > ~/.ssh/known_hosts
       - name: Add .env file
         run: echo "${{ secrets.ENV_FILE }}" > .env
       - name: Deploy code
