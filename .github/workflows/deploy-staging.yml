@@ -16,7 +16,7 @@ jobs:
           echo "${{ secrets.SSH_STG_KEY }}" > /tmp/ssh-key.pem
           chmod 400 /tmp/ssh-key.pem
           mkdir ~/.ssh/
-          echo ec2-35-159-27-80.eu-central-1.compute.amazonaws.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSwvlyEu4auJ3dgjHaOQXR28gfBRF7ZnKmuw/FIZHp0= > ~/.ssh/known_hosts
+          echo ec2-35-159-27-80.eu-central-1.compute.amazonaws.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBK3+aq3MbgBcaubA2ckNnDPNzonCPo+ETDKNbX7Tsaxxr58MbgGnJVkT4og/QHhKrU/+f3z7R2N2bu+wINBiEKc= > ~/.ssh/known_hosts
       - name: Add .env file
         run: echo "${{ secrets.ENV_FILE }}" > .env
       - name: Deploy code
