@@ -50,6 +50,9 @@ passport.use(new JWTStrategy({
             .then(user => {
                 if (user != null)
                     return cb(null, user);
+                    else{
+                        return cb("Unothorized");
+                    }
             })
             .catch(err => {
                 return cb(err);
