@@ -51,7 +51,7 @@ passport.use(new JWTStrategy({
                 if (user != null)
                     return cb(null, user)
                 else{
-                    return cb("Unauthorized")
+                    return cb(new Error('User not found'), false);
                 }
             })
             .catch(err => {
