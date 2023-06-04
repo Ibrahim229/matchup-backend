@@ -1,0 +1,27 @@
+name: Deploy to Staging
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Add SSH key
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > /tmp/ssh-key.pem
+          chmod 400 /tmp/ssh-key.pem
+          mkdir ~/.ssh/
+          echo  ec2-35-159-27-80.eu-central-1.compute.amazonaws.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHGKoxeOaUBycQ8dkY3SlW8TQboEg6uWdbF1q9P0onvxC4JE7PQdYkkHn3uES0E2CPsW0hfdvzTYxVb0p7iEpHA= > ~/.ssh/known_hosts
+      - name: Add .env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+      - name: Deploy code
+        env:
+          URI: ec2-user@ec2-35-159-27-80.eu-central-1.compute.amazonaws.com
+        run: ./ci/deploy.sh
+
+        
