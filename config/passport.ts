@@ -13,7 +13,7 @@ passport.use(new LocalStrategy({
     function (phoneNumber, password, cb) {
         return User.findOne({ phoneNumber })
             .then(user => {
-                console.log("founded user",user)
+                console.log("founded user", user)
                 if (!user) {
                     return cb(null, false, { message: 'Incorrect phone number or password.' });
                 }
@@ -45,16 +45,17 @@ passport.use(new JWTStrategy({
     secretOrKey: process.env.JWT_SECRET
 },
     function (jwtPayload, cb) {
-
+        console.log("jwtPayload", jwtPayload)
         return User.findById(jwtPayload.id)
             .then(user => {
                 if (user != null)
-                    return cb(null, user);
-                    else{
-                        return cb("Unothorized");
-                    }
+                    return cb(null, user)
+                else{
+                    return cb("Unauthorized")
+                }
             })
             .catch(err => {
+                console.log(err)
                 return cb(err);
             });
     }
