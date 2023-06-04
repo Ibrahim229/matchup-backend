@@ -15,8 +15,9 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY }}" > /tmp/ssh-key.pem
           chmod 400 /tmp/ssh-key.pem
-          # mkdir ~/.ssh/
-          # echo ec2-35-159-27-80.eu-central-1.compute.amazonaws.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHGKoxeOaUBycQ8dkY3SlW8TQboEg6uWdbF1q9P0onvxC4JE7PQdYkkHn3uES0E2CPsW0hfdvzTYxVb0p7iEpHA= > ~/.ssh/known_hosts
+          mkdir ~/.ssh/
+          echo ec2-35-159-27-80.eu-central-1.compute.amazonaws.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHGKoxeOaUBycQ8dkY3SlW8TQboEg6uWdbF1q9P0onvxC4JE7PQdYkkHn3uES0E2CPsW0hfdvzTYxVb0p7iEpHA= > ~/.ssh/known_hosts
+          ssh-keygen -R  35.159.27.80
       - name: Add .env file
         run: echo "${{ secrets.ENV_FILE }}" > .env
       - name: Deploy code
