@@ -1,7 +1,5 @@
-import jwt from 'jsonwebtoken'
-import passport from "passport"
 import asyncHandler from '../../middlewares/async-handler';
-import { checkVerification, sendVerification } from '../../../config/twilioLogic';
+import { sendVerification } from '../../../config/twilioLogic';
 import User from '../../../db/user';
 
 const sendOTP = asyncHandler(async (req, res, next) => {
