@@ -17,7 +17,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     user.password = newPassword
     user.markModified('password');
     user.save()
-    res.json({message:"password updated successfully"})
+    res.json({ "data": { "message": "Password reset successfully" } })
 })
 
 export default resetPassword;
