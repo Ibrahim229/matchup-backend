@@ -10,7 +10,7 @@ const verifyOTP = asyncHandler(async (req, res, next) => {
         const token = jwt.sign({ phoneNumber: phoneNumber }, process.env.JWT_SECRET!, { expiresIn: "10m" });
         res.json({ resetToken: token })
     } else {
-        res.json({ message: "Not Valid OTP" }).status(400)
+        res.status(404).json({ message: "Not Valid OTP" }).status(400)
     }
 })
 
