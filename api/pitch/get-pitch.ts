@@ -31,7 +31,7 @@ const getPitch = asyncHandler(async (req, res) => {
         },
         {
             $lookup: {
-                from: 'Period',
+                from: 'periods',
                 localField: 'availabletyList', 
                 foreignField: '_id',
                 as: 'availabletyList', 
