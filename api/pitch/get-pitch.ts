@@ -29,6 +29,14 @@ const getPitch = asyncHandler(async (req, res) => {
                 distance: { $lt: maxDistance },
             },
         },
+        {
+            $lookup: {
+                from: 'Period',
+                localField: 'availabletyList', 
+                foreignField: '_id',
+                as: 'availabletyList', 
+            },
+        },
 
         ]))
     } else {
