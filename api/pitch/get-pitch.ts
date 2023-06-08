@@ -12,7 +12,7 @@ const getPitch = asyncHandler(async (req, res) => {
         const lat = Number(latitude)
         const long = Number(longitude)
         const maxDistance = 10000
-        pitches = await Pitch.aggregate([{
+        pitches = await (await Pitch.aggregate([{
             $geoNear: {
                 near: {
                     type: 'Point',
@@ -30,9 +30,9 @@ const getPitch = asyncHandler(async (req, res) => {
             },
         },
 
-        ]);
+        ]))
     } else {
-        pitches = await Pitch.find().populate("availabletyList");
+        pitches = await Pitch.find();
     }
 
 

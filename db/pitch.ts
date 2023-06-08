@@ -1,7 +1,7 @@
 import { InferSchemaType, Schema, model, Types } from "mongoose";
 import { WithId } from 'mongodb';
+import * as autopopulate from 'mongoose-autopopulate';
 
-import { periodSchema } from "./period";
 
 const PitchSchema = new Schema({
     name: { type: String, required: true, index: { unique: true } },
@@ -25,9 +25,9 @@ const PitchSchema = new Schema({
     playersNumber: {
         type: Number, required: true, max: 11
     },
-    availabletyList: [{ type: Schema.Types.ObjectId, ref: 'Period' }],
+    availabletyList: [{ type: Schema.Types.ObjectId, ref: 'Period', autopopulate: true, }],
     pitchPic: { type: [String], required: true }
-});
+}).plugin(autopopulate.default)
 
 
 
