@@ -12,7 +12,7 @@ const createbook = asyncHandler(async (req, res) => {
     }
     const userID = req.user?._id.toString()
 
-    const book = await Booking.create(req.body, userID)
+    const book = await Booking.create(userID, ...req.body)
 
     res.json({ message: "booked succesfully", book })
 })
