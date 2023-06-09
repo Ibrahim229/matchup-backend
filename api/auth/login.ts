@@ -17,7 +17,7 @@ const login = asyncHandler(async (req, res) => {
             const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, { expiresIn: process.env.JWT_EXPIRES_IN });
             var userData = user.toJson()
             var userID=user._id.toString()
-            return res.json({userID userData, token });
+            return res.json({userID ,userData, token });
         })
     })(req, res);
 })
