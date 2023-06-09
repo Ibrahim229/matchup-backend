@@ -10,9 +10,8 @@ const createbook = asyncHandler(async (req, res) => {
     } else {
         await Period.updateMany({ _id: { $in: req.body.periodIDs } }, { isBooked: true });
     }
-    const userID = req.user?._id.toString()
 
-    const book = await Booking.create(userID, ...req.body)
+    const book = await Booking.create(req.body)
 
     res.json({ message: "booked succesfully", book })
 })
