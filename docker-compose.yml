@@ -13,6 +13,7 @@ services:
       - 80:3000
       - 9229:9229
     environment:
+      TZ: Africa/Cairo
       MONGO_URI: mongodb://mongo/matchit
     working_dir: /usr/src/app
     command: sh -c "npm install && npm run start"
