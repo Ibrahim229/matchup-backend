@@ -10,7 +10,8 @@ const UserSchema = new Schema<IUser, IUserModel>({
   age: { type: Number, required: true },
   gender: { type: String, required: true, enum: ["male", "female"] },
   password: { type: String, required: true },
-  isVerified: { type: Boolean, default: false }
+  isVerified: { type: Boolean, default: false },
+  role: { type: String, required: true, enum: ["superAdmin", "Admin", "User"], default: "User" }
 });
 
 UserSchema.pre("save", function (next) {
@@ -45,14 +46,31 @@ UserSchema.methods.comparePassword = function (password, callback) {
   })
 }
 UserSchema.methods.toJson = function () {
-  return {
-    fullname: this.fullName,
-    phoneNumber: this.phoneNumber,
-    email: this.email,
-    age: this.age,
-    gender: this.gender,
+  var jsonBody;
+  switch (this.role) {
+    case "Admin": {
+      jsonBody = {
+        userName: this.fullName,
+        role: this.role
+      }
+    }
+      break;
+    default: {
+      jsonBody = {
+        fullname: this.fullName,
+        phoneNumber: this.phoneNumber,
+        email: this.email,
+        age: this.age,
+        gender: this.gender,
+        role: this.role
+      }
+    }
+      break;
   }
+  return jsonBody;
 }
+
+
 
 
 export type UserType = WithId<InferSchemaType<typeof UserSchema>>;

@@ -3,6 +3,7 @@ import express from 'express';
 import apiRouter from './api';
 import './db';
 import './cronJob/cronJob';
+import  './helpers/generate-pass';
 // import './index.d.ts';
 require('./config/passport');
 

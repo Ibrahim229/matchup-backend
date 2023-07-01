@@ -6,7 +6,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import User from '../db/user';
 
 config();
-passport.use(new LocalStrategy({
+passport.use("user-auth",new LocalStrategy({
     usernameField: "phoneNumber",
     passwordField: 'password'
 },
@@ -35,6 +35,35 @@ passport.use(new LocalStrategy({
             .catch(err => cb(err));
     }
 ));
+passport.use("admin-auth",new LocalStrategy({
+    usernameField: "userName",
+    passwordField: 'password'
+},
+    function (userName, password, cb) {
+        return User.findOne({ phoneNumber:userName })
+            .then(user => {
+                console.log("founded user", user)
+                if (!user) {
+                    return cb(null, false, { message: 'Incorrect userName or password.' });
+                }
+                if (!user.isVerified) {
+                    return cb(null, false, { message: 'User not verified' });
+                }
+
+                user.comparePassword(password, function (matchError, isMatch) {
+                    if (matchError) {
+                        return cb(null, false, { message: 'Incorrect userName or password.' });
+                    } else if (!isMatch) {
+                        return cb(null, false, { message: 'Incorrect userName or password.' });
+                    } else {
+                        return cb(null, user, { message: 'Logged In Successfully' });
+                    }
+                })
+
+            })
+            .catch(err => cb(err));
+    }
+));
 
 import * as passportJWT from 'passport-jwt'
 
@@ -45,7 +74,6 @@ passport.use(new JWTStrategy({
     secretOrKey: process.env.JWT_SECRET
 },
     function (jwtPayload, cb) {
-        console.log("jwtPayload", jwtPayload)
         return User.findById(jwtPayload.id)
             .then(user => {
                 if (user != null)

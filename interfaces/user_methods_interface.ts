@@ -6,8 +6,9 @@ interface IUserDocument extends Document {
     email: string
     age: number
     gender: string
-    password: String
+    password: string
     isVerified: boolean,
+    role: string
 }
 
 export interface IUser extends IUserDocument {

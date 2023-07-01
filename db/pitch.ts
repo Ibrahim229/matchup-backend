@@ -4,6 +4,7 @@ import * as autopopulate from 'mongoose-autopopulate';
 
 
 const PitchSchema = new Schema({
+    adminId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true, index: { unique: true } },
     description: { type: String, rqeuired: true, },
     price: { type: String, rqeuired: true, },

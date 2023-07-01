@@ -24,7 +24,7 @@ const processRow = async (row) => {
     const now: Date = new Date();
     var latestTime: Date = row.periodIDs.reduce((latest, current) => {
         if (!latest || current.endTime > latest.endTime) {
-            return current;
+            return current  ;
         }
         return latest;
     }, undefined)?.endTime;
