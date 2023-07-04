@@ -6,6 +6,7 @@ import asyncHandler from "../middlewares/async-handler";
 const getAdminUsers = asyncHandler(async (req, res) => {
     if (req.user?.role == "superAdmin") {
         var users = await User.find({ role: "Admin" });
+        res.json(users);
     } else {
 
         res.status(401).json({ error: "Unauthorized" })
