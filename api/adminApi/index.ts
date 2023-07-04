@@ -13,7 +13,7 @@ adminRouter.get('/generateUser/:userName', passport.authenticate('jwt', { sessio
 adminRouter.post('/login', adminLogin);
 adminRouter.get('/adminPitch', passport.authenticate('jwt', { session: false }), getAdminPitch);
 adminRouter.get('/getAdminUsers', passport.authenticate('jwt', { session: false }), getAdminUsers);
-adminRouter.get('/deleteUser', passport.authenticate('jwt', { session: false }), deleteUser);
+adminRouter.delete('/deleteUser/:id', passport.authenticate('jwt', { session: false }), deleteUser);
 
 
 export default adminRouter;
