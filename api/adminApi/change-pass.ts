@@ -8,7 +8,9 @@ const changePass = asyncHandler(async (req, res) => {
         var oldPass = req.body.currentPass;
         var newPass = req.body.newPass;
         var user = req.user;
-        await user.updateOne({ password: newPass })
+        user.password = newPass
+        user.markModified('password');
+        user.save()
         res.json("Pass updated successfully")
     }
     else {
