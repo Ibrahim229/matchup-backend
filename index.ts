@@ -12,7 +12,7 @@ require('./config/passport');
 config();
 
 const app = express();
-app.use(cors)
+app.use(cors())
 var bodyParser = require('body-parser')
 app.use(bodyParser.json()); // Parse JSON bodies
 app.use(bodyParser.urlencoded({ extended: true }));
