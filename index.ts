@@ -14,9 +14,10 @@ config();
 const app = express();
 
 var bodyParser = require('body-parser')
+app.use(cors)
 app.use(bodyParser.json()); // Parse JSON bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api', apiRouter);
-app.use(cors())
+
 
 app.listen(process.env.PORT);
