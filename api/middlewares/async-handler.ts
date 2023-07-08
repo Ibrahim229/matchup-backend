@@ -13,10 +13,20 @@ const asyncHandler: (handler: Handler) => Handler = (handler) => {
 
             await handler(req, res, next);
         } catch (error) {
+            if (error.code && error.code == 11000) {
+                handleDuplicateKeyError(error, res);
+                return
+            }
             console.error(error);
             res.status(500).json({ ok: false });
         }
     }
 }
+const handleDuplicateKeyError = (err, res) => {
+    const field = Object.keys(err.keyValue);
+    const code = 409;
+    res.status(code).json("Row with this name already exist!!");
+}
+
 
 export default asyncHandler;
