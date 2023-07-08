@@ -5,7 +5,7 @@ import asyncHandler from "../../middlewares/async-handler";
 const addRecommend = asyncHandler(async (req, res) => {
     if (req.user?.role == "superAdmin") {
         const { id } = req.params;
-        await Recommended.create({ pitchID: id })
+        await Recommended.create({pitch:id})
 
         res.json({ message: "Pitch add Successfully", })
     }

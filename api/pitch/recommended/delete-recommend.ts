@@ -6,7 +6,7 @@ const deleteRecommend = asyncHandler(async (req, res) => {
     if (req.user?.role == "superAdmin") {
 
         const { id } = req.params;
-        await Recommended.findByIdAndDelete(id)
+        await Recommended.findOneAndDelete({pitchID:id})
 
         res.json({ message: "Pitch deleted Successfully", })
     }
