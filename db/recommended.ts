@@ -2,7 +2,7 @@ import mongoose, { InferSchemaType, Schema, Types } from 'mongoose';
 import * as autopopulate from 'mongoose-autopopulate';
 
 const RecommendedSchema = new Schema({
-    pitchID: { type: Schema.Types.ObjectId, ref: 'Pitch', required: true, autopopulate: true },
+    pitchID: { type: Schema.Types.ObjectId, ref: 'Pitch', required: true, autopopulate: true, index: { unique: true } },
 }).plugin(autopopulate.default);
 
 

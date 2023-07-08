@@ -26,7 +26,6 @@ const PitchSchema = new Schema({
     playersNumber: {
         type: Number, required: true, max: 11
     },
-    availabletyList: [{ type: Schema.Types.ObjectId, ref: 'Period', autopopulate: true, }],
     pitchPic: { type: [String], required: true }
 }).plugin(autopopulate.default)
 
