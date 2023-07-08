@@ -1,5 +1,4 @@
 
-import Period, { PeriodType } from "../../db/period";
 import Pitch from "../../db/pitch";
 import asyncHandler from "../middlewares/async-handler";
 

@@ -8,6 +8,7 @@ interface IUserDocument extends Document {
     gender: string
     password: string
     isVerified: boolean,
+    userPic:string,
     role: string
 }
 

@@ -11,6 +11,7 @@ const UserSchema = new Schema<IUser, IUserModel>({
   gender: { type: String, required: true, enum: ["male", "female"] },
   password: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
+  userPic: { type: String, required: true },
   role: { type: String, required: true, enum: ["superAdmin", "Admin", "User"], default: "User" }
 });
 
@@ -69,6 +70,7 @@ UserSchema.methods.toJson = function () {
         email: this.email,
         age: this.age,
         gender: this.gender,
+        userPic:this.userPic,
         role: this.role
       }
     }
