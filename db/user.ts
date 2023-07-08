@@ -55,6 +55,13 @@ UserSchema.methods.toJson = function () {
       }
     }
       break;
+    case "superAdmin": {
+      jsonBody = {
+        userName: this.fullName,
+        role: this.role
+      }
+    }
+      break;
     default: {
       jsonBody = {
         fullname: this.fullName,
