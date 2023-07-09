@@ -7,7 +7,7 @@ const changePassword = asyncHandler(async (req, res, next) => {
     user!.password = newPassword
     user!.markModified('password');
     user!.save()
-    res.json({ "data": { "message": "Password changed successfully" } })
+    res.json(true)
 })
 
 export default changePassword;
