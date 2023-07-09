@@ -6,7 +6,7 @@ import updateUserPic from "./update-user-pic";
 
 const profileRouter = Router();
 profileRouter.put("/updateProfilePic", upload.single("image"), updateUserPic)
-profileRouter.put("/changeFullName/:fullName", updateUserPic)
+profileRouter.get("/changeFullName/:fullName", updateUserPic)
 
 
 
