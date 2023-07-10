@@ -13,6 +13,6 @@ authRouter.post('/signup', signUpValidate, signup);
 authRouter.post('/login', login);
 authRouter.get('/verify-otp/:phoneNumber/:otp', verifyOTP);
 authRouter.use('/reset-password', resetPassRouter);
-authRouter.use('/verify-token', passport.authenticate('jwt', { session: false }), verifyToken);
+authRouter.get('/verify-token', passport.authenticate('jwt', { session: false }), verifyToken);
 
 export default authRouter;
