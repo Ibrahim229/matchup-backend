@@ -1,13 +1,14 @@
 
-import Pitch from "../../db/pitch";
+import Pitch, { PitchType } from "../../db/pitch";
 import asyncHandler from "../middlewares/async-handler";
 
 const updatePitch = asyncHandler(async (req, res) => {
     const { id } = req.params;
-
+    const oldPitch: PitchType | null | undefined = await Pitch.findById(id);
     var updateObject = {}
     if (req.files?.length ?? 0 > 0) {
-        updateObject["pitchPic"] = (req.files as Express.MulterS3.File[]).map((file) => file.location);
+        updateObject["pitchPic"] = [...(oldPitch?.pitchPic ?? [])]
+        updateObject["pitchPic"] = [...updateObject["pitchPic"], ...(req.files as Express.MulterS3.File[]).map((file) => file.location)];
     }
 
     if (req.body.availabletyList) {
