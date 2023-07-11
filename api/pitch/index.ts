@@ -14,7 +14,7 @@ pitchRouter.get('', getPitch);
 pitchRouter.post('', upload.array("images", 6), createPitch);
 pitchRouter.put('/:id', upload.array("images", 6), updatePitch);
 pitchRouter.delete('/:id', deletePitch);
-pitchRouter.delete('deletePitchImage/:id', deletePitchImage);
+pitchRouter.delete('/deletePitchImage/:id', deletePitchImage);
 
 
 export default pitchRouter;
