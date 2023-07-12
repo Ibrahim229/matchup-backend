@@ -26,6 +26,16 @@ const PitchSchema = new Schema({
     playersNumber: {
         type: Number, required: true, max: 11
     },
+    openTime: {
+        type: Date,
+        required: true,
+        default:new Date(Date.UTC(2023, 6, 12, 12, 0, 0))
+    },
+    closeTime: {
+        type: Date,
+        required: true,
+        default:new Date(Date.UTC(2023, 6, 12, 0, 0, 0))
+    },
     pitchPic: { type: [String], required: true }
 }).plugin(autopopulate.default)
 
