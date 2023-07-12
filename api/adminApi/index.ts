@@ -6,6 +6,7 @@ import getAdminPitch from "./admin-pitch";
 import getAdminUsers from "./admin-users";
 import deleteUser from "./delete-user";
 import changePass from "./change-pass";
+import eventRouter from "./event";
 
 
 const adminRouter = Router();
@@ -16,6 +17,7 @@ adminRouter.get('/adminPitch', passport.authenticate('jwt', { session: false }),
 adminRouter.get('/getAdminUsers', passport.authenticate('jwt', { session: false }), getAdminUsers);
 adminRouter.delete('/deleteUser/:id', passport.authenticate('jwt', { session: false }), deleteUser);
 adminRouter.put('/changePass', passport.authenticate('jwt', { session: false }), changePass);
+adminRouter.use('/event', passport.authenticate('jwt', { session: false }), eventRouter);
 
 
 export default adminRouter;
