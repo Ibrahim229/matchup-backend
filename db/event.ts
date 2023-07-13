@@ -3,7 +3,7 @@ import * as autopopulate from 'mongoose-autopopulate';
 
 export const eventSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true, autopopulate: { select: "fullName phoneNumber email" } },
-    pitchID: { type: Schema.Types.ObjectId, ref: 'Pitch', required: true, autopopulate: { select: "name description price pitchPic" } },
+    pitchID: { type: Schema.Types.ObjectId, ref: 'Pitch', required: true, autopopulate: { select: "name description price groundType playersNumber pitchPic" } },
     title: {
         type: String,
         required: true
