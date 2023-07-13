@@ -24,7 +24,7 @@ connectionPromise.then(() => {
 const processRow = async (row) => {
     const now: Date = new Date();
     const previousDay = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    const startDate = row.startDate
+    const startDate = row.startTime
     if (isDifferenceLessThanDay(startDate, previousDay) && row.fromMobile == true && row.canCancel == true) {
         console.log("updated event can cancel")
         await row.updateOne({ canCancel: false })

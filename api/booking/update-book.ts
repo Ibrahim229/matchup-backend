@@ -6,7 +6,7 @@ import asyncHandler from "../middlewares/async-handler";
 
 const updateBook = asyncHandler(async (req, res) => {
     if (req.user?.role == "User") {
-        const { bookID } = req.query
+        const { bookID } = req.params
         const { startT, endT } = req.body;
         const startTime = new Date(startT);
         const endTime = new Date(endT);

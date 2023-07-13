@@ -6,7 +6,7 @@ import asyncHandler from "../middlewares/async-handler";
 
 const cancelBook = asyncHandler(async (req, res) => {
     if (req.user?.role == "User") {
-        const { bookID } = req.query
+        const { bookID } = req.params
         var result = await Event.findByIdAndUpdate(bookID, { status: "Cancelled" })
         if (result)
             res.json({ message: "book canceled successfully" })
