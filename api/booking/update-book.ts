@@ -30,7 +30,7 @@ const updateBook = asyncHandler(async (req, res) => {
             if (newEvent) {
                 res.json({ message: "Event updated successfully", newEvent })
             } else {
-                res.status(404).json({ message: "Event updated successfully", newEvent })
+                res.status(404).json({ message: "Event not found" })
             }
         }
         else {
