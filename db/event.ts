@@ -2,8 +2,8 @@ import { InferSchemaType, Schema, model } from "mongoose";
 import * as autopopulate from 'mongoose-autopopulate';
 
 export const eventSchema = new Schema({
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true ,autopopulate:{select:"fullName phoneNumber email"}},
-    pitchID: { type: Schema.Types.ObjectId, ref: 'Pitch', required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true, autopopulate: { select: "fullName phoneNumber email" } },
+    pitchID: { type: Schema.Types.ObjectId, ref: 'Pitch', required: true, autopopulate: { select: "name description price pitchPic" } },
     title: {
         type: String,
         required: true
@@ -27,7 +27,7 @@ export const eventSchema = new Schema({
         required: true
     },
     status: {
-        type: String, required: true, enum: ["Active", "OutDated", "Cancelled", ], default: "Active"
+        type: String, required: true, enum: ["Active", "OutDated", "Cancelled",], default: "Active"
     }
 }).plugin(autopopulate.default);
 
