@@ -1,6 +1,6 @@
 import e from 'express';
 import asyncHandler from '../../middlewares/async-handler';
-import Event from '../../../db/event';
+import Event, { eventType } from '../../../db/event';
 
 
 
@@ -10,12 +10,23 @@ const createEvent = asyncHandler(async (req, res, next) => {
         const { title, startT, endT } = req.body;
         const startTime = new Date(startT);
         const endTime = new Date(endT);
-        console.log("Start date", startTime,"End time",endTime)
+        const allEvents: eventType[] = await Event.find({ pitchID, status: "Active" })
+        var startDateIsBusy = allEvents.some(event => {
+            return startTime >= event.startTime && startTime <= event.endTime;
+        });
+        var endDateIsBusy = allEvents.some(event => {
+            return endTime >= event.startTime && endTime <= event.endTime;
+        });
+
         const currentTime = new Date()
         if (startTime >= currentTime && endTime > currentTime && endTime > startTime) {
+            if (startDateIsBusy || endDateIsBusy) {
+                res.status(400).json({ error: "There is event within this selected slot" })
+            }
             const newEvent = await Event.create({ user: req.user?._id, pitchID, title, startTime, endTime })
             res.json({ message: "Event created successfully", newEvent })
         } else {
+
             res.status(400).json({ error: `startT && endT should be after ${currentTime.toDateString()}` })
         }
     } else {
@@ -23,5 +34,7 @@ const createEvent = asyncHandler(async (req, res, next) => {
     }
     return
 })
+
+
 
 export default createEvent;
