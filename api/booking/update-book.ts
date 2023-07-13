@@ -26,8 +26,12 @@ const updateBook = asyncHandler(async (req, res) => {
                 res.status(400).json({ error: "There is event within this selected slot" })
                 return
             }
-            const newEvent = await Event.findByIdAndUpdate(bookID, { startTime, endTime })
-            res.json({ message: "Event created successfully", newEvent })
+            const newEvent = await Event.findByIdAndUpdate(bookID, { startTime, endTime }, { new: true })
+            if (newEvent) {
+                res.json({ message: "Event updated successfully", newEvent })
+            } else {
+                res.status(404).json({ message: "Event updated successfully", newEvent })
+            }
         }
         else {
 
