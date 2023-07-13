@@ -12,16 +12,17 @@ const createEvent = asyncHandler(async (req, res, next) => {
         const endTime = new Date(endT);
         const allEvents: eventType[] = await Event.find({ pitchID, status: "Active" })
         var startDateIsBusy = allEvents.some(event => {
-            return startTime >= event.startTime && startTime <= event.endTime;
+            return startTime >= event.startTime && startTime < event.endTime;
         });
         var endDateIsBusy = allEvents.some(event => {
-            return endTime >= event.startTime && endTime <= event.endTime;
+            return endTime > event.startTime && endTime <= event.endTime;
         });
 
         const currentTime = new Date()
         if (startTime >= currentTime && endTime > currentTime && endTime > startTime) {
             if (startDateIsBusy || endDateIsBusy) {
                 res.status(400).json({ error: "There is event within this selected slot" })
+                return
             }
             const newEvent = await Event.create({ user: req.user?._id, pitchID, title, startTime, endTime })
             res.json({ message: "Event created successfully", newEvent })
