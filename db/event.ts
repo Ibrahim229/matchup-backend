@@ -2,7 +2,7 @@ import { InferSchemaType, Schema, model } from "mongoose";
 import * as autopopulate from 'mongoose-autopopulate';
 
 export const eventSchema = new Schema({
-    userID: { type: Schema.Types.ObjectId, ref: 'User', required: true ,autopopulate: true},
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true ,autopopulate:{select:"fullName phoneNumber email"}},
     pitchID: { type: Schema.Types.ObjectId, ref: 'Pitch', required: true },
     title: {
         type: String,

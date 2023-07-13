@@ -10,12 +10,13 @@ const createEvent = asyncHandler(async (req, res, next) => {
         const { title, startT, endT } = req.body;
         const startTime = new Date(startT);
         const endTime = new Date(endT);
+        console.log("Start date", startTime,"End time",endTime)
         const currentTime = new Date()
         if (startTime >= currentTime && endTime > currentTime && endTime > startTime) {
-            const newEvent = await Event.create({ userID: req.user?._id, pitchID, title, startTime, endTime })
+            const newEvent = await Event.create({ user: req.user?._id, pitchID, title, startTime, endTime })
             res.json({ message: "Event created successfully", newEvent })
         } else {
-            res.status(400).json({ error: `startT && endT should be after ${currentTime.toDateString}` })
+            res.status(400).json({ error: `startT && endT should be after ${currentTime.toDateString()}` })
         }
     } else {
         res.status(401).json({ error: "Unauthorized" })
