@@ -10,6 +10,8 @@ const updateBook = asyncHandler(async (req, res) => {
         const { startT, endT } = req.body;
         const startTime = new Date(startT);
         const endTime = new Date(endT);
+        const event: eventType | null = await Event.findById(bookID)
+        const pitchID = event?.pitchID
         const allEvents: eventType[] = await Event.find({ pitchID, status: "Active" })
         var startDateIsBusy = allEvents.some(event => {
             return startTime >= event.startTime && startTime < event.endTime;
