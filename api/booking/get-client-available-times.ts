@@ -8,7 +8,7 @@ const getBookedEvents = asyncHandler(async (req, res) => {
 
         const { pitchID } = req.params
         const status = "Active"
-        const bookedEvents = Event.find({ pitchID, status })
+        const bookedEvents = await Event.find({ pitchID, status })
         res.json(bookedEvents)
     } else {
         res.status(401).json({ error: "Unauthorized" })
