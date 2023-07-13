@@ -1,11 +1,12 @@
 
-import asyncHandler from "../middlewares/async-handler";
+// import Booking from "../../db/booking";
 import Event, { eventType } from "../../db/event";
+import asyncHandler from "../middlewares/async-handler";
 
-const createbook = asyncHandler(async (req, res) => {
+
+const updateBook = asyncHandler(async (req, res) => {
     if (req.user?.role == "User") {
-        const userID = req.user?._id.toString()
-        const { pitchID } = req.params
+        const { bookID } = req.query
         const { startT, endT } = req.body;
         const startTime = new Date(startT);
         const endTime = new Date(endT);
@@ -23,9 +24,10 @@ const createbook = asyncHandler(async (req, res) => {
                 res.status(400).json({ error: "There is event within this selected slot" })
                 return
             }
-            const newEvent = await Event.create({ user: userID, pitchID, title: "From Matchup app", startTime, endTime, canCancel: false, fromMobile: true })
+            const newEvent = await Event.findByIdAndUpdate(bookID, { startTime, endTime })
             res.json({ message: "Event created successfully", newEvent })
-        } else {
+        }
+        else {
 
             res.status(400).json({ error: `startT && endT should be after ${currentTime.toDateString()}` })
         }
@@ -34,6 +36,4 @@ const createbook = asyncHandler(async (req, res) => {
     }
 })
 
-export default createbook;
-
-
+export default updateBook;

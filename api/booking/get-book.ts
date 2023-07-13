@@ -1,19 +1,16 @@
-
-// import Booking from "../../db/booking";
+import Event from "../../db/event";
 import asyncHandler from "../middlewares/async-handler";
 
+const getbook = asyncHandler(async (req, res) => {
+    if (req.user?.role == "User") {
 
-// const getbook = asyncHandler(async (req, res) => {
-//     const userID = req.user?._id.toString()
-//     const { bookingStatus } = req.query
-//     if (bookingStatus) {
-//         var bookes = await Booking.find({ userID, bookingStatus })
-//         res.json(bookes)
-//     } else {
-//         var bookes = await Booking.find({ userID })
-//         res.json(bookes);
-//     }
+        const userID = req.user?._id.toString()
 
-// })
+        var bookes = await Event.find({ user: userID })
+        res.json(bookes)
+    } else {
+        res.status(401).json({ error: "Unauthorized" })
+    }
+})
 
-// export default getbook;
+export default getbook;

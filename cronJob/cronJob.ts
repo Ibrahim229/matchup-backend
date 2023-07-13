@@ -1,15 +1,16 @@
 import cron from 'node-cron';
 // import Booking from '../db/booking';
 import { connectionPromise } from '../db';
+import Event from '../db/event';
 
 connectionPromise.then(() => {
     cron.schedule('*/1 * * * *', async () => {
         try {
-            // var rows = await Booking.find();
-            // for (const row of rows) {
+            var rows = await Event.find({ status: "Active" });
+            for (const row of rows) {
 
-            //     await processRow(row);
-            // }
+                await processRow(row);
+            }
 
             console.log('Function applied to all rows.');
 
@@ -22,16 +23,22 @@ connectionPromise.then(() => {
 
 const processRow = async (row) => {
     const now: Date = new Date();
-    var latestTime: Date = row.periodIDs.reduce((latest, current) => {
-        if (!latest || current.endTime > latest.endTime) {
-            return current  ;
-        }
-        return latest;
-    }, undefined)?.endTime;
-    if (row.bookingStatus == "Active" && now > latestTime) {
-        console.log("updated Row")
-        await row.updateOne({ bookingStatus: "OutDated" }, { new: true })
+    const previousDay = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const startDate = row.startDate
+    if (isDifferenceLessThanDay(startDate, previousDay) && row.fromMobile == true && row.canCancel == false) {
+        console.log("updated event can cancel")
+        await row.updateOne({ canCancel: true })
     }
-
+    if (now > startDate) {
+        console.log("updated event status")
+        await row.updateOne({ status: "OutDated" })
+    }
 };
+
+const isDifferenceLessThanDay = (date1: Date, date2: Date): boolean => {
+    const differenceInMillis = date1.getTime() - date2.getTime();
+    const millisecondsInDay = 24 * 60 * 60 * 1000;
+
+    return differenceInMillis < millisecondsInDay;
+}
 
