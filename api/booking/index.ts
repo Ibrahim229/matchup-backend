@@ -9,7 +9,7 @@ import getbook from "./get-book";
 
 const bookingRouter = Router();
 
-bookingRouter.get('/:pitchID', getBookedEvents);
+bookingRouter.get('/getBookedEvents/:pitchID', getBookedEvents);
 bookingRouter.post('/:pitchID', createBook);
 bookingRouter.get('/:bookID', cancelBook);
 bookingRouter.put('/:bookID', updateBook);
