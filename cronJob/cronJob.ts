@@ -25,9 +25,9 @@ const processRow = async (row) => {
     const now: Date = new Date();
     const previousDay = new Date(now.getTime() - 24 * 60 * 60 * 1000);
     const startDate = row.startDate
-    if (isDifferenceLessThanDay(startDate, previousDay) && row.fromMobile == true && row.canCancel == false) {
+    if (isDifferenceLessThanDay(startDate, previousDay) && row.fromMobile == true && row.canCancel == true) {
         console.log("updated event can cancel")
-        await row.updateOne({ canCancel: true })
+        await row.updateOne({ canCancel: false })
     }
     if (now > startDate) {
         console.log("updated event status")

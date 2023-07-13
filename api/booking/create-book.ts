@@ -23,7 +23,7 @@ const createbook = asyncHandler(async (req, res) => {
                 res.status(400).json({ error: "There is event within this selected slot" })
                 return
             }
-            const newEvent = await Event.create({ user: userID, pitchID, title: "From Matchup app", startTime, endTime, canCancel: false, fromMobile: true })
+            const newEvent = await Event.create({ user: userID, pitchID, title: "From Matchup app", startTime, endTime,  fromMobile: true })
             res.json({ message: "Event created successfully", newEvent })
         } else {
 
