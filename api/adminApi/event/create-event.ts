@@ -11,6 +11,8 @@ const createEvent = asyncHandler(async (req, res, next) => {
         const startTime = new Date(startT);
         const endTime = new Date(endT);
         const allEvents: eventType[] = await Event.find({ pitchID, status: "Active" })
+        console.log("start time", startTime, "endTime", endTime)
+        console.log("allEvents", allEvents)
         var startDateIsBusy = allEvents.some(event => {
             return startTime >= event.startTime && startTime < event.endTime;
         });
@@ -28,7 +30,7 @@ const createEvent = asyncHandler(async (req, res, next) => {
             res.json({ message: "Event created successfully", newEvent })
         } else {
 
-            res.status(400).json({ error: `startT && endT should be after ${currentTime.toDateString()}` })
+            res.status(400).json({ error: `startT && endT should be after ${currentTime.toTimeString()}` })
         }
     } else {
         res.status(401).json({ error: "Unauthorized" })
