@@ -23,22 +23,32 @@ connectionPromise.then(() => {
 
 const processRow = async (row) => {
     const now: Date = new Date();
-    const previousDay = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const utcNow = new Date(
+        Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate(),
+            now.getUTCHours(),
+            now.getUTCMinutes(),
+            now.getUTCSeconds(),
+            now.getUTCMilliseconds()
+        )
+    );
+    const minusFourHoursTime = new Date(utcNow.getTime() - 4 * 60 * 60 * 1000)
     const startDate = row.startTime
-    if (isDifferenceLessThanDay(startDate, previousDay) && row.fromMobile == true && row.canCancel == true) {
+    if (isDifferenceLessThanDay(minusFourHoursTime, startDate) && row.fromMobile == true && row.canCancel == true) {
         console.log("updated event can cancel")
         await row.updateOne({ canCancel: false })
     }
-    if (now > startDate) {
+    if (utcNow > startDate && row.status == "Active") {
         console.log("updated event status")
         await row.updateOne({ status: "OutDated" })
     }
 };
 
 const isDifferenceLessThanDay = (date1: Date, date2: Date): boolean => {
-    const differenceInMillis = date1.getTime() - date2.getTime();
-    const millisecondsInDay = 24 * 60 * 60 * 1000;
+    return date1.getTime() < date2.getTime() && (date2.getTime() - date1.getTime()) < (4 * 60 * 60 * 1000)
 
-    return differenceInMillis < millisecondsInDay;
+
 }
 
