@@ -34,9 +34,8 @@ const processRow = async (row) => {
             now.getUTCMilliseconds()
         )
     );
-    const minusFourHoursTime = new Date(utcNow.getTime() - 4 * 60 * 60 * 1000)
     const startDate = row.startTime
-    if (isDifferenceLessThanDay(minusFourHoursTime, startDate) && row.fromMobile == true && row.canCancel == true) {
+    if (isDifferenceLessThanDay(utcNow, startDate) && row.fromMobile == true && row.canCancel == true) {
         console.log("updated event can cancel")
         await row.updateOne({ canCancel: false })
     }
@@ -48,7 +47,5 @@ const processRow = async (row) => {
 
 const isDifferenceLessThanDay = (date1: Date, date2: Date): boolean => {
     return date1.getTime() < date2.getTime() && (date2.getTime() - date1.getTime()) < (4 * 60 * 60 * 1000)
-
-
 }
 
