@@ -6,8 +6,25 @@ const updateCloseTime = asyncHandler(async (req, res) => {
     if (req.user?.role == "Admin") {
         const { id } = req.params;
         const { openT, closeT } = req.body
-        var openTime = new Date(openT);
-        var closeTime = new Date(closeT);
+        var now = new Date();
+        var openTime = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            openT.getHours(),
+            openT.getMinutes(),
+            openT.getSeconds(),
+            openT.getMilliseconds()
+        );
+        var closeTime = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            closeT.getHours(),
+            closeT.getMinutes(),
+            closeT.getSeconds(),
+            closeT.getMilliseconds()
+        );
         const pitch = await Pitch.findByIdAndUpdate(id, { openTime, closeTime }, { new: true })
 
         res.json({ message: "Pitch close time updated succesfully", pitchDetails: pitch })
