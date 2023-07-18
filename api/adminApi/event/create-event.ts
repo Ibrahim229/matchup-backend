@@ -41,13 +41,14 @@ const createEvent = asyncHandler(async (req, res, next) => {
             startRange = eventDateOpenTime;
             endRange = eventDateCloseTime;
         }
+        console.log("startTime", startTime, "endTime",endTime)
+        console.log("start & end Range",startRange,endRange)
         if (startTime > startRange && endTime <= endRange) {
             res.status(400).json({ error: "Should be within working hours" });
             return;
         } else if (startTime > endRange || endTime < startRange) {
             const allEvents: eventType[] = await Event.find({ pitchID, status: "Active" })
-            console.log("start time", startTime, "endTime", endTime)
-            console.log("allEvents", allEvents)
+
             var startDateIsBusy = allEvents.some(event => {
                 return startTime >= event.startTime && startTime < event.endTime;
             });
