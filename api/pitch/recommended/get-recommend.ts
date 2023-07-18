@@ -1,9 +1,10 @@
 
-import Recommended from "../../../db/recommended";
+import Recommended, { recommendedType } from "../../../db/recommended";
 import asyncHandler from "../../middlewares/async-handler";
 
 const getRecommend = asyncHandler(async (req, res) => {
-    var recomended = await Recommended.where("pitch").ne(null);
+    var recomended: recommendedType[] = await Recommended.find();
+    recomended.filter((element) => element.pitch != null)
 
     res.json(recomended)
 })
