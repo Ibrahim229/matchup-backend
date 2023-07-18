@@ -7,5 +7,5 @@ const RecommendedSchema = new Schema({
 
 
 const Recommended = mongoose.model('Recommended', RecommendedSchema);
-
+    
 export default Recommended;
