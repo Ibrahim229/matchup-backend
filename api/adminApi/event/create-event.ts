@@ -34,19 +34,43 @@ const createEvent = asyncHandler(async (req, res, next) => {
         );
         var startRange: Date;
         var endRange: Date;
+        var notAvailableRange: { start: Date, end: Date }[] = [];
         if (eventDateCloseTime < eventDateOpenTime) {
             startRange = eventDateCloseTime;
             endRange = eventDateOpenTime;
+            notAvailableRange.push({ start: startRange, end: endRange })
         } else {
             startRange = eventDateOpenTime;
             endRange = eventDateCloseTime;
+            notAvailableRange.push({
+                start: new Date(
+                    startTime.getFullYear(),
+                    startTime.getMonth(),
+                    startTime.getDate(),
+                    0, 0, 0, 0
+                ), end: startRange
+            })
+            notAvailableRange.push({
+                start: endRange, end: new Date(
+                    startTime.getFullYear(),
+                    startTime.getMonth(),
+                    startTime.getDate(),
+                    23, 59, 59, 59
+                )
+            })
         }
-        console.log("startTime", startTime, "endTime",endTime)
-        console.log("start & end Range",startRange,endRange)
-        if (startTime > startRange && endTime <= endRange) {
+        var isStartWithenClosing = notAvailableRange.some(range => {
+            return startTime >= range.start && startTime < range.end;
+        });
+        var isEndWithenClosing = notAvailableRange.some(range => {
+            return endTime > range.start && endTime <= range.end;
+        });
+        console.log("startTime", startTime, "endTime", endTime)
+        console.log("start & end Range", startRange, endRange)
+        if (isStartWithenClosing||isEndWithenClosing) {
             res.status(400).json({ error: "Should be within working hours" });
             return;
-        } else if (startTime > endRange || endTime < startRange) {
+        } else {
             const allEvents: eventType[] = await Event.find({ pitchID, status: "Active" })
 
             var startDateIsBusy = allEvents.some(event => {
@@ -68,11 +92,7 @@ const createEvent = asyncHandler(async (req, res, next) => {
 
                 res.status(400).json({ error: `startT && endT should be after ${currentTime.toTimeString()}` })
             }
-        } else {
-            res.status(400).json({ error: "Should be within working hours" });
-            return;
         }
-
     } else {
         res.status(401).json({ error: "Unauthorized" })
     }
