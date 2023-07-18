@@ -4,9 +4,9 @@ import asyncHandler from "../../middlewares/async-handler";
 
 const getRecommend = asyncHandler(async (req, res) => {
     var recomended: recommendedType[] = await Recommended.find();
-    recomended.filter((element) => element.pitch != null)
+    var recommendedWithoutNull = recomended.filter((element) => element.pitch != null)
 
-    res.json(recomended)
+    res.json(recommendedWithoutNull)
 })
 
 export default getRecommend;
