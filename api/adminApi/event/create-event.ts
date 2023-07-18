@@ -67,8 +67,13 @@ const createEvent = asyncHandler(async (req, res, next) => {
         });
         console.log("startTime", startTime, "endTime", endTime)
         console.log("start & end Range", startRange, endRange)
-        if (isStartWithenClosing||isEndWithenClosing) {
-            res.status(400).json({ error: "Should be within working hours" });
+        if (isStartWithenClosing || isEndWithenClosing) {
+            res.status(400).json({
+                message: {
+                    message: "Should be within working hours."
+                }
+            }
+            );
             return;
         } else {
             const allEvents: eventType[] = await Event.find({ pitchID, status: "Active" })
