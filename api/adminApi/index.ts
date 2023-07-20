@@ -11,7 +11,7 @@ import eventRouter from "./event";
 
 const adminRouter = Router();
 
-adminRouter.get('/generateUser/:userName', generateUser);
+adminRouter.get('/generateUser/:userName', passport.authenticate('jwt', { session: false }), generateUser);
 adminRouter.post('/login', adminLogin);
 adminRouter.get('/adminPitch', passport.authenticate('jwt', { session: false }), getAdminPitch);
 adminRouter.get('/getAdminUsers', passport.authenticate('jwt', { session: false }), getAdminUsers);
