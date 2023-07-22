@@ -11,7 +11,7 @@ const profileRouter = Router();
 profileRouter.put("/updateProfilePic", upload.single("image"), updateUserPic)
 profileRouter.get("/changeFullName/:fullName", changeFullName)
 profileRouter.put("/changePass", changePassword)
-profileRouter.delete("/deleteAcoount", deleteAccount)
+profileRouter.delete("/deleteAccount", deleteAccount)
 
 
 
