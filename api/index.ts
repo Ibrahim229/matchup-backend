@@ -11,7 +11,7 @@ const apiRouter = Router();
 
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/admin', adminRouter);
-apiRouter.use('/pitch', passport.authenticate('jwt', { session: false }), pitchRouter);
+apiRouter.use('/pitch', pitchRouter);
 apiRouter.use('/book', passport.authenticate('jwt', { session: false }), bookingRouter);
 apiRouter.use('/profile', passport.authenticate('jwt', { session: false }), profileRouter);
 apiRouter.use('/superAdmin', passport.authenticate('jwt', { session: false }), superAdminRouter);
