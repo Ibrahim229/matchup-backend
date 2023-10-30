@@ -18,6 +18,7 @@ export const createNewEvent = async (
 		isAllDay,
 		recurrenceRule,
 		recurrenceException,
+		fromMobile,
 	} = event;
 
 	const startTime = new Date(startTimeString);
@@ -49,6 +50,7 @@ export const createNewEvent = async (
 			isAllDay,
 			recurrenceRule,
 			recurrenceException,
+			fromMobile,
 		});
 
 		if (newEvent instanceof Event) return response.json(newEvent);
