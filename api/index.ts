@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import authRouter from './auth';
-import pitchRouter from './pitch';
 import passport from 'passport';
-import bookingRouter from './booking';
 import adminRouter from './adminApi';
+import authRouter from './auth';
+import bookingRouter from './booking';
+import pitchRouter from './pitch';
 import profileRouter from './profile';
 import superAdminRouter from './superAdminApi';
 
