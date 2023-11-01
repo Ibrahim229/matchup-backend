@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { ObjectId } from 'mongodb';
 import Event from '../../../../db/event';
 import Pitch from '../../../../db/pitch';
-import { isEventTimeWithinPitch } from '../../../../helpers/is-event-time-within-pitch';
+import { isEventTimeWithinRange } from '../../../../helpers/is-event-time-within-pitch';
 import { EventType } from '../../../../interfaces/event_interface';
 
 export const createNewEvents = async (
@@ -14,6 +15,7 @@ export const createNewEvents = async (
 	// check that new event in pitch working hours
 	const eventStartTime = new Date(event.startTime);
 	const eventEndTime = new Date(event.endTime);
+	const seriesId = new ObjectId();
 
 	try {
 		const pitch = await Pitch.findById(pitchID).lean();
@@ -21,7 +23,7 @@ export const createNewEvents = async (
 			return response.status(500).json({ message: 'Internal server error, please try again later.' });
 		}
 
-		const isInWorkingHours = isEventTimeWithinPitch(eventStartTime, eventEndTime, pitch.openTime, pitch.closeTime);
+		const isInWorkingHours = isEventTimeWithinRange(eventStartTime, eventEndTime, pitch.openTime, pitch.closeTime);
 
 		if (isInWorkingHours === false) {
 			return response.status(400).json({ message: 'Should be within working hours.' });
@@ -36,6 +38,7 @@ export const createNewEvents = async (
 			endTime.setHours(eventEndTime.getHours());
 
 			return {
+				seriesId,
 				startTime,
 				endTime,
 				user: request.user?._id,
@@ -48,22 +51,36 @@ export const createNewEvents = async (
 			};
 		});
 
-		// check that there is no events in these slots
-		const [eventsStartTime, eventsEndTime] = events.reduce(
-			(array, currentEvent) => {
-				array[0].push(new Date(currentEvent.startTime));
-				array[1].push(new Date(currentEvent.endTime));
+		const [minStartTime, maxStartTime, minEndTime, maxEndTime] = events.reduce(
+			(array, currentEvent, index) => {
+				if (index === 0) {
+					array[0] = currentEvent.startTime;
+					array[1] = currentEvent.startTime;
+					array[2] = currentEvent.endTime;
+					array[3] = currentEvent.endTime;
+					return array;
+				}
+
+				array[0] = array[0] > currentEvent.startTime ? currentEvent.startTime : array[0];
+				array[1] = array[1] < currentEvent.startTime ? currentEvent.startTime : array[1];
+				array[2] = array[2] > currentEvent.endTime ? currentEvent.endTime : array[2];
+				array[3] = array[3] < currentEvent.endTime ? currentEvent.endTime : array[3];
 				return array;
 			},
-			[[], []] as [Date[], Date[]]
+			[new Date(), new Date(), new Date(), new Date()]
 		);
 
 		const allEventsInThisTime = await Event.find({
 			status: 'Active',
-			$and: [{ startTime: { $in: eventsStartTime } }, { endTime: { $in: eventsEndTime } }],
+			startTime: { $gte: minStartTime, $lte: maxStartTime },
+			endTime: { $gte: minEndTime, $lte: maxEndTime },
 		}).lean();
 
-		if (allEventsInThisTime.length) {
+		const isOverlapping = allEventsInThisTime.some((event) => {
+			return isEventTimeWithinRange(event.startTime, event.endTime, eventStartTime, eventEndTime);
+		});
+
+		if (isOverlapping) {
 			return response
 				.status(400)
 				.json({ message: 'There are events in this time period. Please change the repeat criteria.' });

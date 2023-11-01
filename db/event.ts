@@ -2,6 +2,10 @@ import { InferSchemaType, Schema, model } from 'mongoose';
 import * as autopopulate from 'mongoose-autopopulate';
 
 export const eventSchema = new Schema({
+	seriesId: {
+		type: Schema.Types.ObjectId,
+		default: null,
+	},
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Event from '../../../../db/event';
 import Pitch from '../../../../db/pitch';
-import { isEventTimeWithinPitch } from '../../../../helpers/is-event-time-within-pitch';
+import { isEventTimeWithinRange } from '../../../../helpers/is-event-time-within-pitch';
 import { EventType } from '../../../../interfaces/event_interface';
 
 export const createNewEvent = async (
@@ -28,14 +28,19 @@ export const createNewEvent = async (
 		const pitch = await Pitch.findById(pitchID).lean();
 		if (pitch === null) return response.status(500).json({ message: 'Internal server error, please try again later.' });
 
-		const isInWorkingHours = isEventTimeWithinPitch(startTime, endTime, pitch.openTime, pitch.closeTime);
+		const isInWorkingHours = isEventTimeWithinRange(startTime, endTime, pitch.openTime, pitch.closeTime);
 
 		if (isInWorkingHours === false) {
 			return response.status(400).json({ message: 'Should be within working hours.' });
 		}
 
 		// check if there is event in that slot
-		const slotEvent = await Event.find({ status: 'Active', $and: [{ startTime }, { endTime }] }).lean();
+		const slotEvent = await Event.find({
+			status: 'Active',
+			startTime: { $gte: startTime },
+			endTime: { $lte: endTime },
+		}).lean();
+
 		if (slotEvent.length) {
 			return response.status(400).json({ message: 'There is event within this selected slot' });
 		}

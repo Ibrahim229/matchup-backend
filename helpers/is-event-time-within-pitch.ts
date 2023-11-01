@@ -13,7 +13,7 @@ function isWithinRange(date: Date, rangeStart: Date, rangeEnd: Date): boolean {
 }
 
 // A function that takes open and close date and start and end date as parameters and returns true if start and end date are within open and close date
-export function isEventTimeWithinPitch(startDate: Date, endDate: Date, openDate: Date, closeDate: Date): boolean {
+export function isEventTimeWithinRange(startDate: Date, endDate: Date, openDate: Date, closeDate: Date): boolean {
 	// Check if both start and end date are within the open and close date range
 
 	// Convert the dates to local time strings
