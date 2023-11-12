@@ -1,7 +1,12 @@
 import { InferSchemaType, Schema, model } from 'mongoose';
 import * as autopopulate from 'mongoose-autopopulate';
+import { counter } from './counter';
 
 export const eventSchema = new Schema({
+	count: {
+		type: Number,
+		default: null,
+	},
 	seriesId: {
 		type: Schema.Types.ObjectId,
 		default: null,
@@ -54,8 +59,22 @@ export const eventSchema = new Schema({
 	},
 }).plugin(autopopulate.default);
 
-export type eventType = InferSchemaType<typeof eventSchema>;
+eventSchema.pre('save', async function (next) {
+	const event = this;
+
+	if (event.fromMobile === true) {
+		try {
+			const { seq } = await counter.findByIdAndUpdate({ _id: 'events' }, { $inc: { seq: 1 } }, { upsert: true }).lean();
+			event.count = seq;
+			next();
+		} catch (error) {
+			return next(error);
+		}
+	}
+
+	next();
+});
 
 const Event = model('Event', eventSchema);
-
 export default Event;
+export type eventType = InferSchemaType<typeof eventSchema>;
