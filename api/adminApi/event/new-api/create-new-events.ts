@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import Event from '../../../../db/event';
 import Pitch from '../../../../db/pitch';
-import { isEventTimeWithinRange } from '../../../../helpers/is-event-time-within-pitch';
+import { isEventTimeWithinRange, isWithinRange } from '../../../../helpers/is-event-time-within-pitch';
 import { EventType } from '../../../../interfaces/event_interface';
 
 export const createNewEvents = async (
@@ -79,8 +79,12 @@ export const createNewEvents = async (
 			pitchID: pitchID,
 		}).lean();
 
-		const isOverlapping = allEventsInThisTime.some((event) => {
-			return isEventTimeWithinRange(event.startTime, event.endTime, eventStartTime, eventEndTime);
+		const isOverlapping = events.some((event) => {
+			return allEventsInThisTime.some(
+				(dbEvent) =>
+					isWithinRange(dbEvent.startTime, event.startTime, event.endTime) &&
+					isWithinRange(dbEvent.endTime, event.startTime, event.endTime)
+			);
 		});
 
 		if (isOverlapping) {
