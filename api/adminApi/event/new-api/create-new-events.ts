@@ -74,6 +74,7 @@ export const createNewEvents = async (
 			status: 'Active',
 			startTime: { $gte: minStartTime, $lte: maxStartTime },
 			endTime: { $gte: minEndTime, $lte: maxEndTime },
+			pitchID: pitchID,
 		}).lean();
 
 		const isOverlapping = allEventsInThisTime.some((event) => {
