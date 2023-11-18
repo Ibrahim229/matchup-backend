@@ -35,6 +35,8 @@ export const createNewEvents = async (
 			const endTime = new Date(day);
 
 			startTime.setHours(eventStartTime.getHours());
+
+			endTime.setDate(endTime.getDate() + (eventEndTime.getDate() - eventStartTime.getDate()));
 			endTime.setHours(eventEndTime.getHours());
 
 			return {

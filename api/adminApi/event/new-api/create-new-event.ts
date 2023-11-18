@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Event from '../../../../db/event';
 import Pitch from '../../../../db/pitch';
-import { isEventTimeWithinRange } from '../../../../helpers/is-event-time-within-pitch';
+import { isEventTimeWithinRange, isWithinRange } from '../../../../helpers/is-event-time-within-pitch';
 import { EventType } from '../../../../interfaces/event_interface';
 
 export const createNewEvent = async (
@@ -37,11 +37,17 @@ export const createNewEvent = async (
 		// check if there is event in that slot
 		const slotEvent = await Event.find({
 			status: 'Active',
-			startTime: { $gte: startTime },
-			endTime: { $lte: endTime },
+			pitchID: pitchID,
 		}).lean();
 
-		if (slotEvent.length) {
+		const isOverlapping = slotEvent.some((event) => {
+			return (
+				isWithinRange(startTime, event.startTime, event.endTime) &&
+				isWithinRange(endTime, event.startTime, event.endTime)
+			);
+		});
+
+		if (isOverlapping) {
 			return response.status(400).json({ message: 'There is event within this selected slot' });
 		}
 

@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 // A function that checks if a given date is within a given range
-function isWithinRange(date: Date, rangeStart: Date, rangeEnd: Date): boolean {
+export function isWithinRange(date: Date, rangeStart: Date, rangeEnd: Date): boolean {
 	// If the range is not wrapped around midnight, then the date must be between the range start and end
 	if (rangeStart < rangeEnd) {
 		return date >= rangeStart && date <= rangeEnd;

@@ -12,8 +12,7 @@ export const getEvents = asyncHandler(async (request, response) => {
 			const events = await Event.find({
 				pitchID: pitchId,
 				status: 'Active',
-				startTime: { $gte: startTime },
-				endTime: { $lte: endTime },
+				$or: [{ startTime: { $gte: startTime } }, { endTime: { $lte: endTime } }],
 			}).lean();
 
 			const uniqueEvents = removeDuplicateEvents(events);
