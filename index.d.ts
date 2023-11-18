@@ -1,11 +1,11 @@
-import { UserType } from "./db/user";
+import { UserType } from './db/user';
 
-export { };
+export {};
 
 declare global {
-    namespace Express {
-        export interface Request {
-            // user?:  UserType,
-        }
-    }
+	namespace Express {
+		export interface Request {
+			user?: UserType;
+		}
+	}
 }

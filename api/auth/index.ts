@@ -1,13 +1,16 @@
-import { Router } from "express";
-import signup from "./signup";
-import signUpValidate from "../../validations/auth/sign_up_validation";
-import login from "./login";
-import verifyOTP from "./verify-otp";
-import resetPassRouter from "./reset-passowrd";
-import verifyToken from "./verify-token";
-import passport from "passport";
+import { Router } from 'express';
+import passport from 'passport';
+import signUpValidate from '../../validations/auth/sign_up_validation';
+import { createAdmin } from './create-admin';
+import login from './login';
+import resetPassRouter from './reset-passowrd';
+import signup from './signup';
+import verifyOTP from './verify-otp';
+import verifyToken from './verify-token';
 
 const authRouter = Router();
+
+authRouter.post('/create-admin', signUpValidate, createAdmin);
 
 authRouter.post('/signup', signUpValidate, signup);
 authRouter.post('/login', login);
