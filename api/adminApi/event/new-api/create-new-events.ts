@@ -82,8 +82,8 @@ export const createNewEvents = async (
 		const isOverlapping = events.some((event) => {
 			return allEventsInThisTime.some(
 				(dbEvent) =>
-					isWithinRange(dbEvent.startTime, event.startTime, event.endTime) &&
-					isWithinRange(dbEvent.endTime, event.startTime, event.endTime)
+					isWithinRange(event.startTime, dbEvent.startTime, dbEvent.startTime) &&
+					isWithinRange(event.endTime, dbEvent.startTime, dbEvent.endTime)
 			);
 		});
 

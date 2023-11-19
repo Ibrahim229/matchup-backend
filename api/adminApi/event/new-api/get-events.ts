@@ -13,7 +13,7 @@ export const getEvents = asyncHandler(async (request, response) => {
 				pitchID: pitchId,
 				status: 'Active',
 				$or: [{ startTime: { $gte: startTime } }, { endTime: { $lte: endTime } }],
-			}).lean();
+			});
 
 			const uniqueEvents = removeDuplicateEvents(events);
 			return response.status(200).json(uniqueEvents);
