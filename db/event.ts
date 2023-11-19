@@ -41,6 +41,11 @@ export const eventSchema = new Schema({
 		enum: ['Active', 'OutDated', 'Cancelled'],
 		default: 'Active',
 	},
+	canCancel: {
+		type: Boolean,
+		default: true,
+		required: true,
+	},
 	description: {
 		type: String,
 		default: null,
