@@ -34,10 +34,24 @@ export const createNewEvent = async (
 			return response.status(400).json({ message: 'Should be within working hours.' });
 		}
 
+		const openTime = new Date(
+			startTime.getFullYear(),
+			startTime.getMonth(),
+			startTime.getDate(),
+			pitch.openTime.getHours()
+		);
+		const closeTime = new Date(
+			startTime.getFullYear(),
+			startTime.getMonth(),
+			endTime.getDate() + (pitch.closeTime < pitch.openTime ? 1 : 0),
+			pitch.closeTime.getHours()
+		);
+
 		// check if there is event in that slot
 		const slotEvent = await Event.find({
 			status: 'Active',
 			pitchID: pitchID,
+			$and: [{ startTime: { $gte: openTime } }, { endTime: { $lte: closeTime } }],
 		}).lean();
 
 		const isOverlapping = slotEvent.some((event) => {
