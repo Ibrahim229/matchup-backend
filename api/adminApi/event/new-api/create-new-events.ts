@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import Event from '../../../../db/event';
 import Pitch from '../../../../db/pitch';
-import { isEventTimeWithinRange, isWithinRange } from '../../../../helpers/is-event-time-within-pitch';
+import { isEventTimeWithinRange } from '../../../../helpers/is-event-time-within-pitch';
 import { EventType } from '../../../../interfaces/event_interface';
 
 export const createNewEvents = async (
@@ -79,13 +79,13 @@ export const createNewEvents = async (
 			pitchID: pitchID,
 		}).lean();
 
-		const isOverlapping = events.some((event) => {
-			return allEventsInThisTime.some(
+		const isOverlapping = events.some((event) =>
+			allEventsInThisTime.some(
 				(dbEvent) =>
 					isWithinRange(event.startTime, dbEvent.startTime, dbEvent.startTime) &&
 					isWithinRange(event.endTime, dbEvent.startTime, dbEvent.endTime)
-			);
-		});
+			)
+		);
 
 		if (isOverlapping) {
 			return response
@@ -101,3 +101,11 @@ export const createNewEvents = async (
 		return response.status(500).json({ message: 'Internal server error, please try again later.' });
 	}
 };
+
+function isWithinRange(date: Date, rangeStart: Date, rangeEnd: Date): boolean {
+	if (rangeStart < rangeEnd) {
+		return date > rangeStart && date < rangeEnd;
+	} else {
+		return date < rangeEnd || date > rangeStart;
+	}
+}
